@@ -2,6 +2,7 @@ let kosovo;
 
 let lastWeek = [];
 let lastWeekCases = [];
+let lastWeekDeaths = [];
 
 let lastMonth = [];
 let lastMonthCases = [];
@@ -14,6 +15,7 @@ fetch("https://pomber.github.io/covid19/timeseries.json")
     console.log(kosovo);
     renderLastWeek();
     renderLastMonth();
+    renderLastWeekDeaths();
   });
 
 
@@ -33,10 +35,10 @@ function renderChart(labels, cases, chartEl, label) {
       {
         data: cases,
         label: label, //
-        fill: true,
-        backgroundColor: gradient,
-        borderColor: "rgba(189, 195, 199, 0.4)",
-        pointBackgroundColor: "rgba(189, 195, 199, 0.4)",
+        fill: false,
+        // backgroundColor: gradient,
+        borderColor: "rgb(75, 192, 192)",
+        // pointBackgroundColor: "rgba(189, 195, 199, 0.4)",
         // tension: 0.5,
       },
     ],
@@ -46,7 +48,7 @@ function renderChart(labels, cases, chartEl, label) {
     type: "line",
     data: data,
     options: {
-      radius: 5,
+      radius: 3,
       hitRadius: 20,
       responsive: true,
       animation: {
@@ -61,7 +63,7 @@ function renderChart(labels, cases, chartEl, label) {
           return delay;
         },
       },
-      hoverRadius: 12,
+      hoverRadius: 10,
       scales: {
         y: {
           ticks: {
@@ -78,11 +80,15 @@ function renderChart(labels, cases, chartEl, label) {
   const myChart = new Chart(ctx, config);
 }
 
-// '2022-1-1'
-// '2022-1-24'
 
 // Last Week Chart
 function renderLastWeek() {
+  getLastWeekLabels();
+  getLastWeekConfirmed();
+  renderChart(lastWeek, lastWeekCases, "#lastWeekChart", "7 Ditët e fundit");
+}
+
+function getLastWeekLabels() {
   lastWeek = kosovo.slice(kosovo.length - 7).map((item) => {
     return (
       item.date.slice(item.date.length - 2) +
@@ -90,9 +96,6 @@ function renderLastWeek() {
       item.date.slice(item.date.length - 4, item.date.length - 3)
     );
   });
-  console.log(lastWeek);
-  getLastWeekConfirmed();
-  renderChart(lastWeek, lastWeekCases, "#lastWeekChart", "7 Ditët e fundit");
 }
 
 function getLastWeekConfirmed() {
@@ -100,6 +103,18 @@ function getLastWeekConfirmed() {
   for (let i = 1; i < last7.length; i++) {
     lastWeekCases.push(last7[i].confirmed - last7[i - 1].confirmed);
   }
+}
+
+function getLastWeekDeaths() {
+  const last7 = kosovo.slice(kosovo.length - 8);
+  for (let i = 1; i < last7.length; i++) {
+    lastWeekDeaths.push(last7[i].deaths - last7[i - 1].deaths);
+  }
+}
+
+function renderLastWeekDeaths() {
+  getLastWeekDeaths()
+  renderChart(lastWeek, lastWeekDeaths, "#lastWeekDeathsChart", "7 Ditët e fundit");
 }
 
 // Last Month Chart
