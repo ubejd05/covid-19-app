@@ -1,6 +1,5 @@
 let kosovo;
 
-let lastWeek = [];
 let lastWeekCases = [];
 let lastWeekDeaths = [];
 
@@ -48,6 +47,7 @@ function renderChart(labels, cases, chartEl, label) {
     type: "line",
     data: data,
     options: {
+      // clip: {left: 0, top: 0, right: 0, bottom: 0},
       radius: 3,
       hitRadius: 20,
       responsive: true,
@@ -74,28 +74,46 @@ function renderChart(labels, cases, chartEl, label) {
           },
         },
       },
+      // plugins: {
+      //   tooltip: {
+      //     enabled: true, //this is by default true
+      //     interaction: {
+      //       intersect: true,
+      //     }
+      //   }
+      // },
     },
   };
 
   const myChart = new Chart(ctx, config);
 }
 
+function getLabels(numDays) {
+  return kosovo.slice(kosovo.length - numDays).map((item) => {
+    if (item.date.length < 9) {
+      return (
+        "0" +
+        item.date.slice(item.date.length - 1) +
+        "/" +
+        "0" +
+        item.date.slice(item.date.length - 3, item.date.length - 2)
+      );
+    } else if (item.date.length < 10) {
+      return (
+        item.date.slice(item.date.length - 2) +
+        "/" +
+        "0" +
+        item.date.slice(item.date.length - 4, item.date.length - 3)
+      );
+    }
+  });
+}
+
 
 // Last Week Chart
 function renderLastWeek() {
-  getLastWeekLabels();
   getLastWeekConfirmed();
-  renderChart(lastWeek, lastWeekCases, "#lastWeekChart", "7 Ditët e fundit");
-}
-
-function getLastWeekLabels() {
-  lastWeek = kosovo.slice(kosovo.length - 7).map((item) => {
-    return (
-      item.date.slice(item.date.length - 2) +
-      "/" +
-      item.date.slice(item.date.length - 4, item.date.length - 3)
-    );
-  });
+  renderChart(getLabels(7), lastWeekCases, "#lastWeekChart", "Rastet e konfirmuara");
 }
 
 function getLastWeekConfirmed() {
@@ -114,38 +132,15 @@ function getLastWeekDeaths() {
 
 function renderLastWeekDeaths() {
   getLastWeekDeaths()
-  renderChart(lastWeek, lastWeekDeaths, "#lastWeekDeathsChart", "7 Ditët e fundit");
+  renderChart(getLabels(7), lastWeekDeaths, "#lastWeekDeathsChart", "Vdekjet");
 }
 
-// Last Month Chart
-function lastMonthDates() {
-  lastMonth = kosovo.slice(kosovo.length - 30).map((item) => {
-    if (item.date.length < 9) {
-      return (
-        "0" +
-        item.date.slice(item.date.length - 1) +
-        "/" +
-        "0" +
-        item.date.slice(item.date.length - 3, item.date.length - 2)
-      );
-    } else if (item.date.length < 10) {
-      return (
-        item.date.slice(item.date.length - 2) +
-        "/" +
-        "0" +
-        item.date.slice(item.date.length - 4, item.date.length - 3)
-      );
-    }
-  });
 
-  return lastMonth;
-}
 
 function renderLastMonth() {
-  lastMonthDates();
   getLastMonthConfirmed();
   renderChart(
-    lastMonthDates(),
+    getLabels(30),
     lastMonthCases,
     "#lastMonthChart",
     "30 Ditët e fundit"

@@ -8,13 +8,18 @@
   <title>Cart JS Tutorial</title>
 </head>
 <body>
-  <div class="chart">
-    <canvas id="lastWeekChart"></canvas>
-  </div>
-  <div class="chart">
-    <canvas id="lastWeekDeathsChart"></canvas>
-  </div>
-  <div class="chart">
+  <section id="last-week">
+    <h2>7 ditët e fundit</h2>
+    <div id="last-week-charts">
+      <div class="chart" style="width: 45vw;">
+        <canvas id="lastWeekChart"></canvas>
+      </div>
+      <div class="chart" style="width: 45vw;">
+        <canvas id="lastWeekDeathsChart"></canvas>
+      </div>
+    </div>
+  </section>
+  <div class="chart lastmonth">
     <canvas id="lastMonthChart"></canvas>
   </div>
   
