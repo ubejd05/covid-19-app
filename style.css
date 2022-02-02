@@ -15,11 +15,12 @@ body {
   display: block;
 }
 
-#last-week {
+section {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom: 70px;
 }
 
 #last-week-charts {
@@ -31,8 +32,10 @@ body {
 
 h2 {
   display: block;
+  margin-bottom: 30px;
 }
 
-.lastmonth {
+#last-month .chart{
   width: 90vw;
+  margin-bottom: 30px;
 }

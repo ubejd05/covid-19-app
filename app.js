@@ -3,8 +3,8 @@ let kosovo;
 let lastWeekCases = [];
 let lastWeekDeaths = [];
 
-let lastMonth = [];
 let lastMonthCases = [];
+let lastMonthDeaths = [];
 
 
 fetch("https://pomber.github.io/covid19/timeseries.json")
@@ -15,6 +15,7 @@ fetch("https://pomber.github.io/covid19/timeseries.json")
     renderLastWeek();
     renderLastMonth();
     renderLastWeekDeaths();
+    renderLastMonthDeaths();
   });
 
 
@@ -143,7 +144,17 @@ function renderLastMonth() {
     getLabels(30),
     lastMonthCases,
     "#lastMonthChart",
-    "30 Ditët e fundit"
+    "Rastet e konfirmuara"
+  );
+}
+
+function renderLastMonthDeaths() {
+  getLastMonthDeaths();
+  renderChart(
+    getLabels(30),
+    lastMonthDeaths,
+    "#lastMonthDeathsChart",
+    "Vdekjet"
   );
 }
 
@@ -151,5 +162,12 @@ function getLastMonthConfirmed() {
   const last30 = kosovo.slice(kosovo.length - 31);
   for (let i = 1; i < last30.length; i++) {
     lastMonthCases.push(last30[i].confirmed - last30[i - 1].confirmed);
+  }
+}
+
+function getLastMonthDeaths() {
+  const last30 = kosovo.slice(kosovo.length - 31);
+  for (let i = 1; i < last30.length; i++) {
+    lastMonthDeaths.push(last30[i].deaths - last30[i - 1].deaths);
   }
 }
