@@ -39,3 +39,64 @@ h2 {
   width: 90vw;
   margin-bottom: 30px;
 }
+
+#table-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-bottom: 70px;
+  width: 90vw;
+  
+}
+
+.card {
+  border: 1px solid black;
+  width: 250px;
+  height: 100px;
+  position: relative;
+}
+
+.card h3 {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  margin: 0;
+}
+
+.card p {
+  position: absolute;
+  top: 20px;
+  left: 15px;
+  font-size: 30px;
+  /* margin-top: 10px; */
+}
+
+.card .color {
+  display: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+}
+
+
+
+/* 
+
+
+table {
+  border-collapse: collapse;
+  width: 700px;
+  height: 200px;
+  font-size: 30px;
+}
+
+table, th, td {
+  border: 1px solid black;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px;
+} */

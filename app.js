@@ -1,4 +1,5 @@
 let kosovo;
+let lastDay;
 
 let lastWeekCases = [];
 let lastWeekDeaths = [];
@@ -11,7 +12,8 @@ fetch("https://pomber.github.io/covid19/timeseries.json")
   .then((response) => response.json())
   .then((data) => {
     kosovo = data["Kosovo"];
-    console.log(kosovo);
+    setLastDay(kosovo);
+    renderTable(lastDay);
     renderLastWeek();
     renderLastMonth();
     renderLastWeekDeaths();
@@ -19,7 +21,7 @@ fetch("https://pomber.github.io/covid19/timeseries.json")
   });
 
 
-function renderChart(labels, cases, chartEl, label) {
+function renderChart(labels, cases, chartEl, label, chartType) {
   const ctx = document.querySelector(chartEl).getContext("2d"); //
 
   let delayed;
@@ -36,8 +38,16 @@ function renderChart(labels, cases, chartEl, label) {
         data: cases,
         label: label, //
         fill: false,
-        // backgroundColor: gradient,
+        backgroundColor: gradient,
         borderColor: "rgb(75, 192, 192)",
+        datalabels: {
+          color: 'rgb(75, 192, 192)',
+          anchor: 'end',
+          align: 'top',
+          font: {
+            weight: 'bold'
+          }
+        }
         // pointBackgroundColor: "rgba(189, 195, 199, 0.4)",
         // tension: 0.5,
       },
@@ -45,8 +55,9 @@ function renderChart(labels, cases, chartEl, label) {
   };
 
   const config = {
-    type: "line",
+    type: chartType,
     data: data,
+    plugins: [ChartDataLabels],
     options: {
       // clip: {left: 0, top: 0, right: 0, bottom: 0},
       radius: 3,
@@ -75,6 +86,7 @@ function renderChart(labels, cases, chartEl, label) {
           },
         },
       },
+      
       // plugins: {
       //   tooltip: {
       //     enabled: true, //this is by default true
@@ -114,7 +126,7 @@ function getLabels(numDays) {
 // Last Week Chart
 function renderLastWeek() {
   getLastWeekConfirmed();
-  renderChart(getLabels(7), lastWeekCases, "#lastWeekChart", "Rastet e konfirmuara");
+  renderChart(getLabels(7), lastWeekCases, "#lastWeekChart", "Rastet e konfirmuara", 'bar');
 }
 
 function getLastWeekConfirmed() {
@@ -133,7 +145,7 @@ function getLastWeekDeaths() {
 
 function renderLastWeekDeaths() {
   getLastWeekDeaths()
-  renderChart(getLabels(7), lastWeekDeaths, "#lastWeekDeathsChart", "Vdekjet");
+  renderChart(getLabels(7), lastWeekDeaths, "#lastWeekDeathsChart", "Vdekjet", 'bar');
 }
 
 
@@ -144,7 +156,8 @@ function renderLastMonth() {
     getLabels(30),
     lastMonthCases,
     "#lastMonthChart",
-    "Rastet e konfirmuara"
+    "Rastet e konfirmuara",
+    'line'
   );
 }
 
@@ -154,7 +167,8 @@ function renderLastMonthDeaths() {
     getLabels(30),
     lastMonthDeaths,
     "#lastMonthDeathsChart",
-    "Vdekjet"
+    "Vdekjet",
+    'line'
   );
 }
 
@@ -170,4 +184,52 @@ function getLastMonthDeaths() {
   for (let i = 1; i < last30.length; i++) {
     lastMonthDeaths.push(last30[i].deaths - last30[i - 1].deaths);
   }
+}
+
+function setLastDay(data) {
+  lastDay = {
+    date: data[data.length - 1].date,
+    confirmed: data[data.length - 1].confirmed - data[data.length - 2].confirmed,
+    deaths: data[data.length - 1].deaths - data[data.length - 2].deaths,
+  }
+}
+
+function renderTable(data) {
+  const tableSection = document.querySelector('#table-section');
+  // tableSection.innerHTML = `
+  //   <table>
+  //     <tr>
+  //       <th style="border-left: 10px solid gray;">Data</th>
+  //       <td>${data.date}</td>
+  //     </tr>
+  //     <tr>
+  //       <th style="border-left: 10px solid skyblue;">Rastet e reja</th>
+  //       <td>${data.confirmed}</td>
+  //     </tr>
+  //     <tr>
+  //       <th style="border-left: 10px solid lightcoral;">Vdekjet</th>
+  //       <td>${data.deaths}</td>
+  //     </tr>
+  //   </table>
+  // `;
+
+  tableSection.innerHTML = `
+    <div class="card">
+      <div class="color" style="background-color: lightgray;"></div>
+      <h3>Data e përditësimit</h3>
+      <p>13/02/2022</p>
+    </div>
+    <div class="card">
+      <div class="color" style="background-color: skyblue;"></div>
+      <h3>Rastet e reja</h3>
+      <p>735</p>
+    </div>
+    <div class="card">
+      <div class="color" style="background-color: lightcoral;"></div>
+      <h3>Vdekjet</h3>
+      <p>4</p>
+    </div>
+  `;
+
+  
 }
