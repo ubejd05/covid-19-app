@@ -85,23 +85,32 @@ h2 {
   height: 100%;
 }
 
-
-
-/* 
-
-
-table {
-  border-collapse: collapse;
-  width: 700px;
-  height: 200px;
-  font-size: 30px;
+#table-section > div:nth-child(odd) {
+  animation: moveDown .7s ease-in-out;
 }
 
-table, th, td {
-  border: 1px solid black;
+#table-section > div:nth-child(2) {
+  animation: moveUp .7s ease-in-out;
 }
 
-th, td {
-  text-align: left;
-  padding: 10px;
-} */
+@keyframes moveDown {
+  0% {
+    transform: translateY(-150px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes moveUp {
+  0% {
+    transform: translateY(150px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
