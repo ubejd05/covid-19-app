@@ -114,3 +114,27 @@ h2 {
     opacity: 1;
   }
 }
+
+@media(max-width: 1200px) {
+  #last-week-charts {
+    flex-direction: column;
+  }
+  #last-week-charts .chart {
+    margin-bottom: 30px;
+    width: 80vw !important; 
+  }
+}
+
+@media(max-width: 850px) {
+  .chart {
+    width: 90vw !important; 
+  }
+
+  #table-section {
+    flex-direction: column;
+  }
+
+  #table-section > div {
+    margin-bottom: 30px;
+  }
+}
