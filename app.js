@@ -196,38 +196,21 @@ function setLastDay(data) {
 
 function renderTable(data) {
   const tableSection = document.querySelector('#table-section');
-  // tableSection.innerHTML = `
-  //   <table>
-  //     <tr>
-  //       <th style="border-left: 10px solid gray;">Data</th>
-  //       <td>${data.date}</td>
-  //     </tr>
-  //     <tr>
-  //       <th style="border-left: 10px solid skyblue;">Rastet e reja</th>
-  //       <td>${data.confirmed}</td>
-  //     </tr>
-  //     <tr>
-  //       <th style="border-left: 10px solid lightcoral;">Vdekjet</th>
-  //       <td>${data.deaths}</td>
-  //     </tr>
-  //   </table>
-  // `;
-
   tableSection.innerHTML = `
     <div class="card">
       <div class="color" style="background-color: lightgray;"></div>
       <h3>Data e përditësimit</h3>
-      <p>13/02/2022</p>
+      <p>${data.date}</p>
     </div>
     <div class="card">
       <div class="color" style="background-color: skyblue;"></div>
       <h3>Rastet e reja</h3>
-      <p>735</p>
+      <p>${data.confirmed}</p>
     </div>
     <div class="card">
       <div class="color" style="background-color: lightcoral;"></div>
       <h3>Vdekjet</h3>
-      <p>4</p>
+      <p>${data.deaths}</p>
     </div>
   `;
 

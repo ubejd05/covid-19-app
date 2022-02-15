@@ -24,11 +24,16 @@ section {
 }
 
 #last-week-charts {
+  width: 90vw;
   display: flex;
-  /* flex-direction: /; */
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
+
+#last-week-charts .chart {
+  width: 49% !important;
+}
+  
 
 h2 {
   display: block;
@@ -36,8 +41,8 @@ h2 {
 }
 
 #last-month .chart{
-  width: 90vw;
-  margin-bottom: 30px;
+  width: 80vw;
+  margin-bottom: 70px;
 }
 
 #table-section {
