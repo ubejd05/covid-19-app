@@ -54,7 +54,7 @@ function renderChart(labels, cases, chartEl, label, chartType, labelsdata) {
     plugins: [ChartDataLabels],
     options: {
       // clip: {left: 0, top: 0, right: 0, bottom: 0},
-      radius: 3,
+      radius: 2,
       hitRadius: 20,
       responsive: true,
       animation: {
@@ -213,7 +213,7 @@ function renderTable(data) {
     <div class="card">
       <div class="color" style="background-color: lightgray;"></div>
       <h3>Data e përditësimit</h3>
-      <p>${data.date}</p>
+      <p>${renderDate(data.date)}</p>
     </div>
     <div class="card">
       <div class="color" style="background-color: skyblue;"></div>
@@ -229,5 +229,6 @@ function renderTable(data) {
 }
 
 function renderDate(date) {
-  
+  let myDate = new Date(date);
+  return new Intl.DateTimeFormat('en-GB', { dateStyle: 'short'}).format(myDate)
 }
