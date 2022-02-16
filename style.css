@@ -128,6 +128,7 @@ h2 {
 @media(max-width: 850px) {
   .chart {
     width: 90vw !important; 
+    display: inline-block !important;
   }
 
   #table-section {
