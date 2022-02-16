@@ -57,18 +57,18 @@ function renderChart(labels, cases, chartEl, label, chartType, labelsdata) {
       radius: 2,
       hitRadius: 20,
       responsive: true,
-      animation: {
-        onComplete: () => {
-          delayed = true;
-        },
-        delay: (context) => {
-          let delay = 0;
-          if (context.type === "data" && context.mode === "default" && !delayed) {
-            delay = context.dataIndex * 200 + context.datasetIndex * 100;
-          }
-          return delay;
-        },
-      },
+      // animation: {
+      //   onComplete: () => {
+      //     delayed = true;
+      //   },
+      //   delay: (context) => {
+      //     let delay = 0;
+      //     if (context.type === "data" && context.mode === "default" && !delayed) {
+      //       delay = context.dataIndex * 200 + context.datasetIndex * 100;
+      //     }
+      //     return delay;
+      //   },
+      // },
       hoverRadius: 10,
       scales: {
         y: {
