@@ -85,13 +85,13 @@ h2 {
   height: 100%;
 }
 
-#table-section > div:nth-child(odd) {
+/* #table-section > div:nth-child(odd) {
   animation: moveDown .7s ease-in-out;
 }
 
 #table-section > div:nth-child(2) {
   animation: moveUp .7s ease-in-out;
-}
+} */
 
 @keyframes moveDown {
   0% {
