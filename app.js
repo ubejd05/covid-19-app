@@ -1,54 +1,51 @@
-let kosovo;
-let lastDay;
+"use strict";
 
-let lastWeekCases = [];
-let lastWeekDeaths = [];
+var kosovo = void 0;
+var lastDay = void 0;
 
-let lastMonthCases = [];
-let lastMonthDeaths = [];
+var lastWeekCases = [];
+var lastWeekDeaths = [];
 
+var lastMonthCases = [];
+var lastMonthDeaths = [];
 
-fetch("https://pomber.github.io/covid19/timeseries.json")
-  .then((response) => response.json())
-  .then((data) => {
-    kosovo = data["Kosovo"];
-    setLastDay(kosovo);
-    renderTable(lastDay);
-    renderLastWeek();
-    renderLastMonth();
-    renderLastWeekDeaths();
-    renderLastMonthDeaths();
-  });
-
+fetch("https://pomber.github.io/covid19/timeseries.json").then(function (response) {
+  return response.json();
+}).then(function (data) {
+  kosovo = data["Kosovo"];
+  setLastDay(kosovo);
+  renderTable(lastDay);
+  renderLastWeek();
+  renderLastMonth();
+  renderLastWeekDeaths();
+  renderLastMonthDeaths();
+});
 
 function renderChart(labels, cases, chartEl, label, chartType, labelsdata) {
-  const ctx = document.querySelector(chartEl).getContext("2d"); //
+  var ctx = document.querySelector(chartEl).getContext("2d"); //
 
-  let delayed;
+  var delayed = void 0;
 
   //Gradient Fill
-  let gradient = ctx.createLinearGradient(0, 0, 0, 400);
+  var gradient = ctx.createLinearGradient(0, 0, 0, 400);
   gradient.addColorStop(0, "rgba(58, 123, 231, 1)");
   gradient.addColorStop(1, "rgba(0, 210, 255 , 0.7)");
 
-  const data = {
-    labels,
-    datasets: [
-      {
-        data: cases,
-        label: label, //
-        fill: false,
-        backgroundColor: gradient,
-        borderColor: "rgb(75, 192, 192)",
-        datalabels: {},
-        // pointBackgroundColor: "rgba(189, 195, 199, 0.4)",
-        tension: 0.2,
-      },
-    ],
+  var data = {
+    labels: labels,
+    datasets: [{
+      data: cases,
+      label: label, //
+      fill: false,
+      backgroundColor: gradient,
+      borderColor: "rgb(75, 192, 192)",
+      datalabels: {},
+      // pointBackgroundColor: "rgba(189, 195, 199, 0.4)",
+      tension: 0.2
+    }]
   };
 
-
-  const config = {
+  var config = {
     type: chartType,
     data: data,
     plugins: [ChartDataLabels],
@@ -57,42 +54,33 @@ function renderChart(labels, cases, chartEl, label, chartType, labelsdata) {
       radius: 2,
       hitRadius: 20,
       responsive: true,
-      // animation: {
-      //   onComplete: () => {
-      //     delayed = true;
-      //   },
-      //   delay: (context) => {
-      //     let delay = 0;
-      //     if (context.type === "data" && context.mode === "default" && !delayed) {
-      //       delay = context.dataIndex * 200 + context.datasetIndex * 100;
-      //     }
-      //     return delay;
-      //   },
-      // },
+      animation: {
+        onComplete: function onComplete() {
+          delayed = true;
+        },
+        delay: function delay(context) {
+          var delay = 0;
+          if (context.type === "data" && context.mode === "default" && !delayed) {
+            delay = context.dataIndex * 200 + context.datasetIndex * 100;
+          }
+          return delay;
+        }
+      },
       hoverRadius: 10,
       scales: {
         y: {
           ticks: {
-            callback: function (value) {
+            callback: function callback(value) {
               // return "$" + value + "m";
               return value;
-            },
-          },
-        },
-      },
-      
-      // plugins: {
-      //   tooltip: {
-      //     enabled: true, //this is by default true
-      //     interaction: {
-      //       intersect: true,
-      //     }
-      //   }
-      // },
-    },
+            }
+          }
+        }
+      }
+
+    }
   };
 
-  
   if (labelsdata) {
     data.datasets[0].datalabels = {
       color: 'rgb(75, 192, 192)',
@@ -101,38 +89,25 @@ function renderChart(labels, cases, chartEl, label, chartType, labelsdata) {
       font: {
         weight: 'bold'
       }
-    }
+    };
     config.plugins = [ChartDataLabels];
   } else {
     data.datasets[0].datalabels = {};
     config.plugins = [];
-
   }
 
-  const myChart = new Chart(ctx, config);
+  var myChart = new Chart(ctx, config);
 }
 
 function getLabels(numDays) {
-  return kosovo.slice(kosovo.length - numDays).map((item) => {
+  return kosovo.slice(kosovo.length - numDays).map(function (item) {
     if (item.date.length < 9) {
-      return (
-        "0" +
-        item.date.slice(item.date.length - 1) +
-        "/" +
-        "0" +
-        item.date.slice(item.date.length - 3, item.date.length - 2)
-      );
+      return "0" + item.date.slice(item.date.length - 1) + "/" + "0" + item.date.slice(item.date.length - 3, item.date.length - 2);
     } else if (item.date.length < 10) {
-      return (
-        item.date.slice(item.date.length - 2) +
-        "/" +
-        "0" +
-        item.date.slice(item.date.length - 4, item.date.length - 3)
-      );
+      return item.date.slice(item.date.length - 2) + "/" + "0" + item.date.slice(item.date.length - 4, item.date.length - 3);
     }
   });
 }
-
 
 // Last Week Chart
 function renderLastWeek() {
@@ -141,60 +116,44 @@ function renderLastWeek() {
 }
 
 function getLastWeekConfirmed() {
-  const last7 = kosovo.slice(kosovo.length - 8);
-  for (let i = 1; i < last7.length; i++) {
+  var last7 = kosovo.slice(kosovo.length - 8);
+  for (var i = 1; i < last7.length; i++) {
     lastWeekCases.push(last7[i].confirmed - last7[i - 1].confirmed);
   }
 }
 
 function getLastWeekDeaths() {
-  const last7 = kosovo.slice(kosovo.length - 8);
-  for (let i = 1; i < last7.length; i++) {
+  var last7 = kosovo.slice(kosovo.length - 8);
+  for (var i = 1; i < last7.length; i++) {
     lastWeekDeaths.push(last7[i].deaths - last7[i - 1].deaths);
   }
 }
 
 function renderLastWeekDeaths() {
-  getLastWeekDeaths()
+  getLastWeekDeaths();
   renderChart(getLabels(7), lastWeekDeaths, "#lastWeekDeathsChart", "Vdekjet", 'bar', true);
 }
 
-
-
 function renderLastMonth() {
   getLastMonthConfirmed();
-  renderChart(
-    getLabels(30),
-    lastMonthCases,
-    "#lastMonthChart",
-    "Rastet e konfirmuara",
-    'line',
-    false
-  );
+  renderChart(getLabels(30), lastMonthCases, "#lastMonthChart", "Rastet e konfirmuara", 'line', false);
 }
 
 function renderLastMonthDeaths() {
   getLastMonthDeaths();
-  renderChart(
-    getLabels(30),
-    lastMonthDeaths,
-    "#lastMonthDeathsChart",
-    "Vdekjet",
-    'line',
-    false
-  );
+  renderChart(getLabels(30), lastMonthDeaths, "#lastMonthDeathsChart", "Vdekjet", 'line', false);
 }
 
 function getLastMonthConfirmed() {
-  const last30 = kosovo.slice(kosovo.length - 31);
-  for (let i = 1; i < last30.length; i++) {
+  var last30 = kosovo.slice(kosovo.length - 31);
+  for (var i = 1; i < last30.length; i++) {
     lastMonthCases.push(last30[i].confirmed - last30[i - 1].confirmed);
   }
 }
 
 function getLastMonthDeaths() {
-  const last30 = kosovo.slice(kosovo.length - 31);
-  for (let i = 1; i < last30.length; i++) {
+  var last30 = kosovo.slice(kosovo.length - 31);
+  for (var i = 1; i < last30.length; i++) {
     lastMonthDeaths.push(last30[i].deaths - last30[i - 1].deaths);
   }
 }
@@ -203,32 +162,21 @@ function setLastDay(data) {
   lastDay = {
     date: data[data.length - 1].date,
     confirmed: data[data.length - 1].confirmed - data[data.length - 2].confirmed,
-    deaths: data[data.length - 1].deaths - data[data.length - 2].deaths,
-  }
+    deaths: data[data.length - 1].deaths - data[data.length - 2].deaths
+  };
 }
 
 function renderTable(data) {
-  const tableSection = document.querySelector('#table-section');
-  tableSection.innerHTML = `
-    <div class="card">
-      <div class="color" style="background-color: lightgray;"></div>
-      <h3>Data e përditësimit</h3>
-      <p>${renderDate(data.date)}</p>
-    </div>
-    <div class="card">
-      <div class="color" style="background-color: skyblue;"></div>
-      <h3>Rastet e reja</h3>
-      <p>${data.confirmed}</p>
-    </div>
-    <div class="card">
-      <div class="color" style="background-color: lightcoral;"></div>
-      <h3>Vdekjet</h3>
-      <p>${data.deaths}</p>
-    </div>
-  `;
+  var dateEl = document.querySelector('p#date');
+  var casesEl = document.querySelector('p#cases');
+  var deathsEl = document.querySelector('p#deaths');
+
+  dateEl.textContent = renderDate(data.date);
+  casesEl.textContent = data.confirmed;
+  deathsEl.textContent = data.deaths;
 }
 
 function renderDate(date) {
-  let myDate = new Date(date);
-  return new Intl.DateTimeFormat('en-GB', { dateStyle: 'short'}).format(myDate)
+  var myDate = new Date(date);
+  return new Intl.DateTimeFormat('en-GB', { dateStyle: 'short' }).format(myDate);
 }
