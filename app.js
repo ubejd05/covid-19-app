@@ -9,9 +9,11 @@ var lastWeekDeaths = [];
 var lastMonthCases = [];
 var lastMonthDeaths = [];
 
-fetch("https://pomber.github.io/covid19/timeseries.json").then(function (response) {
-  return response.json();
-}).then(function (data) {
+axios({
+  method: "get",
+  url: "https://pomber.github.io/covid19/timeseries.json"
+}).then(function (res) {
+  let data = res.data;
   kosovo = data["Kosovo"];
   setLastDay(kosovo);
   renderTable(lastDay);
@@ -19,9 +21,9 @@ fetch("https://pomber.github.io/covid19/timeseries.json").then(function (respons
   renderLastMonth();
   renderLastWeekDeaths();
   renderLastMonthDeaths();
-});
+  });
 
-function renderChart(labels, cases, chartEl, label, chartType, labelsdata) {
+function renderChart(labels, cases, chartEl, label, chartType, labelsdata, borderWidth) {
   var ctx = document.querySelector(chartEl).getContext("2d"); //
 
   var delayed = void 0;
@@ -40,6 +42,7 @@ function renderChart(labels, cases, chartEl, label, chartType, labelsdata) {
       backgroundColor: gradient,
       borderColor: "rgb(75, 192, 192)",
       datalabels: {},
+      borderWidth: borderWidth,
       // pointBackgroundColor: "rgba(189, 195, 199, 0.4)",
       tension: 0.2
     }]
@@ -112,7 +115,7 @@ function getLabels(numDays) {
 // Last Week Chart
 function renderLastWeek() {
   getLastWeekConfirmed();
-  renderChart(getLabels(7), lastWeekCases, "#lastWeekChart", "Rastet e konfirmuara", 'bar', true);
+  renderChart(getLabels(7), lastWeekCases, "#lastWeekChart", "Rastet e konfirmuara", 'bar', true, 0);
 }
 
 function getLastWeekConfirmed() {
@@ -131,17 +134,17 @@ function getLastWeekDeaths() {
 
 function renderLastWeekDeaths() {
   getLastWeekDeaths();
-  renderChart(getLabels(7), lastWeekDeaths, "#lastWeekDeathsChart", "Vdekjet", 'bar', true);
+  renderChart(getLabels(7), lastWeekDeaths, "#lastWeekDeathsChart", "Vdekjet", 'bar', true, 0);
 }
 
 function renderLastMonth() {
   getLastMonthConfirmed();
-  renderChart(getLabels(30), lastMonthCases, "#lastMonthChart", "Rastet e konfirmuara", 'line', false);
+  renderChart(getLabels(30), lastMonthCases, "#lastMonthChart", "Rastet e konfirmuara", 'line', false, 5);
 }
 
 function renderLastMonthDeaths() {
   getLastMonthDeaths();
-  renderChart(getLabels(30), lastMonthDeaths, "#lastMonthDeathsChart", "Vdekjet", 'line', false);
+  renderChart(getLabels(30), lastMonthDeaths, "#lastMonthDeathsChart", "Vdekjet", 'line', false, 5);
 }
 
 function getLastMonthConfirmed() {
