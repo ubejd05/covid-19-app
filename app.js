@@ -13,7 +13,7 @@ axios({
   method: "get",
   url: "https://pomber.github.io/covid19/timeseries.json"
 }).then(function (res) {
-  let data = res.data;
+  var data = res.data;
   kosovo = data["Kosovo"];
   setLastDay(kosovo);
   renderTable(lastDay);
@@ -21,7 +21,7 @@ axios({
   renderLastMonth();
   renderLastWeekDeaths();
   renderLastMonthDeaths();
-  });
+});
 
 function renderChart(labels, cases, chartEl, label, chartType, labelsdata, borderWidth) {
   var ctx = document.querySelector(chartEl).getContext("2d"); //
